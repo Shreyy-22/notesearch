@@ -1,0 +1,4 @@
+Heaps and priority queues
+
+A binary heap stores a complete binary tree in an array. Push and pop cost O(log n).
+Use a heap to get the top k items without sorting everything. Dijkstra relies on a priority queue.

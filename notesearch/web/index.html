@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Search your own notes: typo-tolerant, ranked, instant.">
+  <title>NoteSearch</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script>
+    /* apply the saved theme before first paint to avoid a flash */
+    try { var t = JSON.parse(localStorage.getItem('ns-theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="app">
+    <!-- Sidebar (desktop) -->
+    <aside class="sidebar" aria-label="Primary">
+      <div class="brand"><span class="brand-mark" id="logoSide"></span><span>NoteSearch</span></div>
+      <nav class="nav" aria-label="Sections">
+        <a href="#/" data-view="overview"><span data-icon="home"></span>Overview</a>
+        <a href="#/search" data-view="search"><span data-icon="search"></span>Search</a>
+        <a href="#/library" data-view="library"><span data-icon="library"></span>All notes<span class="badge" id="navCount">–</span></a>
+      </nav>
+      <div class="side-foot">
+        <div class="folder" title="Notes folder"><span data-icon="folder"></span><span id="folderName">…</span></div>
+        <button class="btn" id="btnReindex" type="button"><span data-icon="refresh"></span><span class="label">Rescan folder</span></button>
+        <div class="row">
+          <button class="btn ghost icon" id="btnTheme" type="button" aria-label="Toggle light / dark theme" title="Toggle theme (t)"></button>
+          <button class="btn ghost icon" id="btnKeys" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"><span data-icon="keyboard"></span></button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="content">
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark" id="logoTop"></span><span>NoteSearch</span></div>
+        <div class="search" id="searchBox">
+          <span data-icon="search"></span>
+          <input id="q" type="text" role="combobox" aria-label="Search notes" aria-expanded="false" aria-controls="suggest"
+                 aria-autocomplete="list" placeholder="Search your notes…" autocomplete="off" spellcheck="false" enterkeyhint="search">
+          <div class="hint">
+            <button class="clear" id="btnClear" type="button" aria-label="Clear search"><span data-icon="x" data-size="14"></span></button>
+            <kbd class="slash" aria-hidden="true">/</kbd>
+          </div>
+          <div class="suggest" id="suggest" role="listbox" hidden></div>
+        </div>
+        <button class="btn ghost icon" id="btnThemeTop" type="button" aria-label="Toggle theme"></button>
+      </header>
+      <main id="main" tabindex="-1"><div id="view"></div></main>
+    </div>
+
+    <!-- Note reader: docked on wide screens, drawer on narrow -->
+    <aside class="reader" id="reader" aria-label="Note" hidden>
+      <div class="reader-head">
+        <div class="reader-title">
+          <h2 id="rTitle"></h2>
+          <button class="btn ghost icon sm" id="rClose" type="button" aria-label="Close note" title="Close (Esc)"><span data-icon="x"></span></button>
+        </div>
+        <div class="reader-meta" id="rMeta"></div>
+        <div class="reader-tools">
+          <span class="count" id="rCount" aria-live="polite"></span>
+          <button class="btn sm icon" id="rPrev" type="button" aria-label="Previous match" title="Previous match (Shift+N)"><span data-icon="up"></span></button>
+          <button class="btn sm icon" id="rNext" type="button" aria-label="Next match" title="Next match (n)"><span data-icon="down"></span></button>
+          <button class="btn sm" id="rCopy" type="button"><span data-icon="copy" data-size="15"></span>Copy path</button>
+        </div>
+      </div>
+      <div class="reader-body" id="rBody" tabindex="0"></div>
+    </aside>
+  </div>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <!-- Bottom navigation (phones) -->
+  <nav class="bottom-nav" aria-label="Sections">
+    <a href="#/" data-view="overview"><span data-icon="home" data-size="22"></span>Overview</a>
+    <a href="#/search" data-view="search"><span data-icon="search" data-size="22"></span>Search</a>
+    <a href="#/library" data-view="library"><span data-icon="library" data-size="22"></span>Notes</a>
+  </nav>
+
+  <dialog id="keysDialog" aria-labelledby="keysTitle">
+    <div class="dlg-head"><h2 id="keysTitle">Keyboard shortcuts</h2>
+      <button class="btn ghost icon sm" id="keysClose" type="button" aria-label="Close"><span data-icon="x"></span></button></div>
+    <div class="keys">
+      <div>Focus the search box <kbd>/</kbd></div>
+      <div>Next / previous result <span><kbd>j</kbd> <kbd>k</kbd></span></div>
+      <div>Open the focused result <kbd>Enter</kbd></div>
+      <div>Next / previous match in a note <span><kbd>n</kbd> <kbd>Shift</kbd>+<kbd>N</kbd></span></div>
+      <div>Close note / hide suggestions <kbd>Esc</kbd></div>
+      <div>Accept an autocomplete suggestion <kbd>Tab</kbd></div>
+      <div>Toggle light / dark theme <kbd>t</kbd></div>
+      <div>Show this help <kbd>?</kbd></div>
+    </div>
+  </dialog>
+
+  <div id="toasts" aria-live="polite"></div>
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
